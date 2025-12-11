@@ -2,7 +2,7 @@
   <div class="left-sidebar">
     <div class="sidebar-menu">
       <!-- 调度管理分组 -->
-      <div class="menu-group">
+      <div v-if="currentGroup === 'scheduling'" class="menu-group">
         <div class="group-title">
           <el-icon class="group-icon">
             <Operation />
@@ -26,7 +26,7 @@
       </div>
 
       <!-- 资源池管理分组 -->
-      <div class="menu-group">
+      <div v-if="currentGroup === 'resource-pool'" class="menu-group">
         <div class="group-title">
           <el-icon class="group-icon">
             <Box />
@@ -92,6 +92,17 @@ const resourcePoolItems: MenuItem[] = [
     route: '/compute-node'
   }
 ]
+
+// 根据当前路由判断应该显示哪个分组
+const currentGroup = computed(() => {
+  const path = route.path
+  if (path === '/scheduling-policy') {
+    return 'scheduling'
+  } else if (path === '/resource-pool' || path === '/compute-node') {
+    return 'resource-pool'
+  }
+  return 'resource-pool' // 默认显示资源池管理
+})
 
 const isActive = (key: string) => {
   const allItems = [...schedulingItems, ...resourcePoolItems]
