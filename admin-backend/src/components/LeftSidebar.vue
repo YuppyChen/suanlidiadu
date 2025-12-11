@@ -1,17 +1,52 @@
 <template>
   <div class="left-sidebar">
     <div class="sidebar-menu">
-      <div
-        v-for="item in menuItems"
-        :key="item.key"
-        class="menu-item"
-        :class="{ active: isActive(item.key) }"
-        @click="handleMenuClick(item.key)"
-      >
-        <el-icon class="menu-icon">
-          <component :is="item.icon" />
-        </el-icon>
-        <span class="menu-text">{{ item.label }}</span>
+      <!-- 调度管理分组 -->
+      <div class="menu-group">
+        <div class="group-title">
+          <el-icon class="group-icon">
+            <Operation />
+          </el-icon>
+          <span class="group-text">调度管理</span>
+        </div>
+        <div class="group-items">
+          <div
+            v-for="item in schedulingItems"
+            :key="item.key"
+            class="menu-item"
+            :class="{ active: isActive(item.key) }"
+            @click="handleMenuClick(item.key)"
+          >
+            <el-icon class="menu-icon">
+              <component :is="item.icon" />
+            </el-icon>
+            <span class="menu-text">{{ item.label }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 资源池管理分组 -->
+      <div class="menu-group">
+        <div class="group-title">
+          <el-icon class="group-icon">
+            <Box />
+          </el-icon>
+          <span class="group-text">资源池管理</span>
+        </div>
+        <div class="group-items">
+          <div
+            v-for="item in resourcePoolItems"
+            :key="item.key"
+            class="menu-item"
+            :class="{ active: isActive(item.key) }"
+            @click="handleMenuClick(item.key)"
+          >
+            <el-icon class="menu-icon">
+              <component :is="item.icon" />
+            </el-icon>
+            <span class="menu-text">{{ item.label }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -20,7 +55,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Box, List, Operation } from '@element-plus/icons-vue'
+import { Box, Operation, Files } from '@element-plus/icons-vue'
 
 interface MenuItem {
   key: string
@@ -32,13 +67,18 @@ interface MenuItem {
 const router = useRouter()
 const route = useRoute()
 
-const menuItems: MenuItem[] = [
+// 调度管理菜单项
+const schedulingItems: MenuItem[] = [
   {
     key: 'scheduling-policy',
     label: '调度策略管理',
-    icon: Operation,
+    icon: Files,
     route: '/scheduling-policy'
-  },
+  }
+]
+
+// 资源池管理菜单项
+const resourcePoolItems: MenuItem[] = [
   {
     key: 'resource-pool',
     label: '资源池管理',
@@ -48,18 +88,20 @@ const menuItems: MenuItem[] = [
   {
     key: 'compute-node',
     label: '算力节点管理',
-    icon: List,
+    icon: Files,
     route: '/compute-node'
   }
 ]
 
 const isActive = (key: string) => {
-  const item = menuItems.find((m) => m.key === key)
+  const allItems = [...schedulingItems, ...resourcePoolItems]
+  const item = allItems.find((m) => m.key === key)
   return item && route.path === item.route
 }
 
 const handleMenuClick = (key: string) => {
-  const item = menuItems.find((m) => m.key === key)
+  const allItems = [...schedulingItems, ...resourcePoolItems]
+  const item = allItems.find((m) => m.key === key)
   if (item) {
     router.push(item.route)
   }
@@ -82,14 +124,46 @@ const handleMenuClick = (key: string) => {
   overflow-y: auto;
 }
 
+.menu-group {
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .group-title {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px 8px;
+    color: #909399;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: default;
+
+    .group-icon {
+      font-size: 16px;
+      margin-right: 8px;
+    }
+
+    .group-text {
+      flex: 1;
+    }
+  }
+
+  .group-items {
+    padding: 0;
+  }
+}
+
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 10px 16px 10px 40px;
   cursor: pointer;
   transition: all 0.3s;
   color: #606266;
   position: relative;
+  font-size: 14px;
 
   &:hover {
     background-color: #f5f7fa;
@@ -116,14 +190,13 @@ const handleMenuClick = (key: string) => {
   }
 
   .menu-icon {
-    font-size: 18px;
-    margin-right: 12px;
+    font-size: 16px;
+    margin-right: 8px;
     color: #909399;
     transition: color 0.3s;
   }
 
   .menu-text {
-    font-size: 14px;
     flex: 1;
   }
 }

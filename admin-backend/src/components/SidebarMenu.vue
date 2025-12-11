@@ -167,6 +167,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { Close, Lock, Box, Document, Connection, TakeawayBox, Operation } from '@element-plus/icons-vue'
 
 const props = defineProps<{
@@ -178,6 +179,8 @@ const emit = defineEmits<{
   menuSelect: [index: string]
 }>()
 
+const router = useRouter()
+const route = useRoute()
 const visible = ref(props.modelValue)
 const activeMenu = ref('')
 
@@ -258,6 +261,18 @@ const handleClose = () => {
 const handleMenuSelect = (index: string) => {
   activeMenu.value = index
   emit('menuSelect', index)
+
+  // 导航到对应路由
+  const routeMap: Record<string, string> = {
+    'scheduling-policy': '/scheduling-policy',
+    'resource-pool': '/resource-pool',
+    'compute-node': '/compute-node'
+  }
+
+  if (routeMap[index]) {
+    router.push(routeMap[index])
+    visible.value = false // 关闭侧边栏
+  }
 }
 </script>
 
