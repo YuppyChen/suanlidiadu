@@ -45,10 +45,12 @@ git push -u origin main
 ```
 项目名称: admin-backend
 生产分支: main
-构建命令: cd admin-backend && npm install && npm run build
+构建命令: cd admin-backend && npm install && npm run build:production
 输出目录: admin-backend/dist
 环境变量: NODE_VERSION=20.19.0
 ```
+
+> **提示**: `build:production` 会跳过类型检查以加快构建速度
 
 6. 点击 **Save and Deploy**
 
@@ -72,7 +74,7 @@ git remote -v
 | 配置项 | 值 |
 |--------|-----|
 | Framework preset | Vue |
-| Build command | `cd admin-backend && npm install && npm run build` |
+| Build command | `cd admin-backend && npm install && npm run build:production` |
 | Build output directory | `admin-backend/dist` |
 | Root directory | `/` |
 | Node.js version | `20.19.0` |

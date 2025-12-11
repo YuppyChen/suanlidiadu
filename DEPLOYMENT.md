@@ -44,9 +44,11 @@ git push
 
 #### 构建设置
 - **框架预设**: `Vue`
-- **构建命令**: `cd admin-backend && npm install && npm run build`
+- **构建命令**: `cd admin-backend && npm install && npm run build:production`
 - **构建输出目录**: `admin-backend/dist`
 - **根目录（高级）**: `/` (保持默认)
+
+> **注意**: 使用 `build:production` 命令可跳过类型检查，加快构建速度。如需完整类型检查，使用 `npm run build`。
 
 #### 环境变量（可选）
 ```
