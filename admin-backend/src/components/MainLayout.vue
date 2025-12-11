@@ -21,10 +21,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import TopNavbar from '@/components/TopNavbar.vue'
 import SidebarMenu from '@/components/SidebarMenu.vue'
 import LeftSidebar from '@/components/LeftSidebar.vue'
 
+const router = useRouter()
 const sidebarVisible = ref(false)
 
 const handleToggleSidebar = () => {
@@ -38,6 +40,18 @@ const handleMenuSelect = (index: string) => {
 const handleSidebarMenuSelect = (index: string) => {
   console.log('Sidebar menu selected:', index)
   sidebarVisible.value = false
+  
+  // Route mapping: menu index -> route name
+  const routeMap: Record<string, string> = {
+    'scheduling-policy': 'scheduling-policy',
+    'resource-pool': 'resource-pool',
+    'compute-node': 'compute-node'
+  }
+  
+  const routeName = routeMap[index]
+  if (routeName) {
+    router.push({ name: routeName })
+  }
 }
 </script>
 

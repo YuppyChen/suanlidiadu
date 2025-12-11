@@ -45,15 +45,15 @@
         <!-- 右侧服务目录 -->
         <div class="sidebar-right">
           <div class="service-grid">
-            <!-- 访问控制 -->
+            <!-- 调度管理 -->
             <div class="service-category">
               <div class="category-header">
-                <el-icon><Lock /></el-icon>
-                <span class="category-title">访问控制</span>
+                <el-icon><Operation /></el-icon>
+                <span class="category-title">调度管理</span>
               </div>
               <div class="service-items">
                 <div
-                  v-for="item in accessControlItems"
+                  v-for="item in schedulingItems"
                   :key="item.index"
                   class="service-item"
                   :class="{ active: activeMenu === item.index }"
@@ -73,6 +73,25 @@
               <div class="service-items">
                 <div
                   v-for="item in resourcePoolItems"
+                  :key="item.index"
+                  class="service-item"
+                  :class="{ active: activeMenu === item.index }"
+                  @click="handleMenuSelect(item.index)"
+                >
+                  {{ item.label }}
+                </div>
+              </div>
+            </div>
+
+            <!-- 访问控制 -->
+            <div class="service-category">
+              <div class="category-header">
+                <el-icon><Lock /></el-icon>
+                <span class="category-title">访问控制</span>
+              </div>
+              <div class="service-items">
+                <div
+                  v-for="item in accessControlItems"
                   :key="item.index"
                   class="service-item"
                   :class="{ active: activeMenu === item.index }"
@@ -148,7 +167,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { Close, Lock, Box, Document, Connection, TakeawayBox } from '@element-plus/icons-vue'
+import { Close, Lock, Box, Document, Connection, TakeawayBox, Operation } from '@element-plus/icons-vue'
 
 const props = defineProps<{
   modelValue: boolean
@@ -183,10 +202,15 @@ const accessControlItems = [
   { index: 'tenant-management', label: '租户管理' }
 ]
 
+// 调度管理
+const schedulingItems = [
+  { index: 'scheduling-policy', label: '调度策略管理' }
+]
+
 // 资源池纳管
 const resourcePoolItems = [
-  { index: 'resource-pool-management', label: '资源池管理' },
-  { index: 'compute-node-management', label: '算力节点管理' }
+  { index: 'resource-pool', label: '资源池管理' },
+  { index: 'compute-node', label: '算力节点管理' }
 ]
 
 // 工单管理
@@ -211,7 +235,6 @@ const clusterFederationItems = [
   { index: 'network-management', label: '网络管理' },
   { index: 'cluster-inspection', label: '集群巡检' },
   { index: 'cluster-backup-detail', label: '集群备份' },
-  { index: 'scheduling-policy', label: '调度策略管理' },
   { index: 'unified-image-repo', label: '统一镜像仓库' },
   { index: 'unified-storage-pool', label: '统一存储池' },
   { index: 'container-security', label: '容器安全' }
