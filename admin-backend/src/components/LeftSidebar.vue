@@ -1,103 +1,68 @@
 <template>
   <div class="left-sidebar">
     <div class="sidebar-menu">
-      <!-- 调度管理 -->
-      <div class="menu-group">
-        <div class="group-header">
-          <span class="group-title">调度管理</span>
-        </div>
-        <div
-          v-for="item in schedulingMenuItems"
-          :key="item.key"
-          class="menu-item"
-          :class="{ active: activeMenu === item.key }"
-          @click="handleMenuClick(item.key)"
-        >
-          <el-icon class="menu-icon">
-            <component :is="item.icon" />
-          </el-icon>
-          <span class="menu-text">{{ item.label }}</span>
-        </div>
-      </div>
-
-      <!-- 资源池纳管 -->
-      <div class="menu-group">
-        <div class="group-header">
-          <span class="group-title">资源池纳管</span>
-        </div>
-        <div
-          v-for="item in resourceMenuItems"
-          :key="item.key"
-          class="menu-item"
-          :class="{ active: activeMenu === item.key }"
-          @click="handleMenuClick(item.key)"
-        >
-          <el-icon class="menu-icon">
-            <component :is="item.icon" />
-          </el-icon>
-          <span class="menu-text">{{ item.label }}</span>
-        </div>
+      <div
+        v-for="item in menuItems"
+        :key="item.key"
+        class="menu-item"
+        :class="{ active: isActive(item.key) }"
+        @click="handleMenuClick(item.key)"
+      >
+        <el-icon class="menu-icon">
+          <component :is="item.icon" />
+        </el-icon>
+        <span class="menu-text">{{ item.label }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { Box, List, Operation } from '@element-plus/icons-vue'
 
 interface MenuItem {
   key: string
   label: string
   icon: any
+  route: string
 }
 
-const props = defineProps<{
-  defaultActive?: string
-}>()
+const router = useRouter()
+const route = useRoute()
 
-const emit = defineEmits<{
-  menuSelect: [key: string]
-}>()
-
-const activeMenu = ref(props.defaultActive || 'resource-pool')
-
-// 监听 props 变化
-watch(
-  () => props.defaultActive,
-  (newValue) => {
-    if (newValue) {
-      activeMenu.value = newValue
-    }
-  }
-)
-
-// 调度管理菜单
-const schedulingMenuItems: MenuItem[] = [
+const menuItems: MenuItem[] = [
   {
     key: 'scheduling-policy',
     label: '调度策略管理',
-    icon: Operation
-  }
-]
-
-// 资源池纳管菜单
-const resourceMenuItems: MenuItem[] = [
+    icon: Operation,
+    route: '/scheduling-policy'
+  },
   {
     key: 'resource-pool',
     label: '资源池管理',
-    icon: Box
+    icon: Box,
+    route: '/resource-pool'
   },
   {
-    key: 'compute-category',
-    label: '算力分类管理',
-    icon: List
+    key: 'compute-node',
+    label: '算力节点管理',
+    icon: List,
+    route: '/compute-node'
   }
 ]
 
+const isActive = (key: string) => {
+  const item = menuItems.find((m) => m.key === key)
+  return item && route.path === item.route
+}
+
 const handleMenuClick = (key: string) => {
-  activeMenu.value = key
-  emit('menuSelect', key)
+  const item = menuItems.find((m) => m.key === key)
+  if (item) {
+    router.push(item.route)
+  }
 }
 </script>
 
@@ -115,26 +80,6 @@ const handleMenuClick = (key: string) => {
   flex: 1;
   padding: 8px 0;
   overflow-y: auto;
-}
-
-.menu-group {
-  margin-bottom: 16px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.group-header {
-  padding: 12px 16px 8px;
-
-  .group-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: #909399;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
 }
 
 .menu-item {

@@ -1,277 +1,87 @@
 <template>
-  <div class="resource-pool-view">
-    <!-- 顶部导航栏 -->
-    <TopNavbar @toggle-sidebar="handleToggleSidebar" @menu-select="handleMenuSelect" />
+  <MainLayout>
+    <div class="content-wrapper">
+      <!-- 页面标题 -->
+      <div class="page-header">
+        <h2 class="page-title">资源池管理</h2>
+      </div>
 
-    <!-- 侧边栏菜单 -->
-    <SidebarMenu v-model="sidebarVisible" @menu-select="handleSidebarMenuSelect" />
-
-    <!-- 主内容区域 -->
-    <div class="main-layout">
-      <!-- 左侧菜单 -->
-      <LeftSidebar :default-active="activeLeftMenu" @menu-select="handleLeftMenuSelect" />
-
-      <!-- 右侧内容 -->
-      <div class="content-area">
-        <!-- 资源池管理 -->
-        <div v-if="activeLeftMenu === 'resource-pool'" class="content-wrapper">
-          <!-- 页面标题 -->
-          <div class="page-header">
-            <h2 class="page-title">资源池管理</h2>
-          </div>
-
-          <!-- 内容区 -->
-          <div class="content-section">
-            <!-- 操作栏 -->
-            <div class="toolbar">
-              <el-button type="primary" @click="handleAdd">
-                <el-icon><Plus /></el-icon>
-                新建
-              </el-button>
-              <el-button @click="handleSync">
-                <el-icon><Refresh /></el-icon>
-                同步信息
-              </el-button>
-              <el-button :disabled="selectedRows.length === 0" @click="handleBatchDelete">
-                <el-icon><Delete /></el-icon>
-                删除
-              </el-button>
-              <div class="toolbar-right">
-                <el-input
-                  v-model="searchText"
-                  placeholder="搜索"
-                  class="search-input"
-                  clearable
-                >
-                  <template #suffix>
-                    <el-icon class="search-icon"><Search /></el-icon>
-                  </template>
-                </el-input>
-              </div>
-            </div>
-
-            <!-- 数据表格 -->
-            <el-table
-              :data="filteredData"
-              @selection-change="handleSelectionChange"
-              class="resource-table"
+      <!-- 内容区 -->
+      <div class="content-section">
+        <!-- 操作栏 -->
+        <div class="toolbar">
+          <el-button type="primary" @click="handleAdd">
+            <el-icon><Plus /></el-icon>
+            新建
+          </el-button>
+          <el-button @click="handleSync">
+            <el-icon><Refresh /></el-icon>
+            同步信息
+          </el-button>
+          <el-button :disabled="selectedRows.length === 0" @click="handleBatchDelete">
+            <el-icon><Delete /></el-icon>
+            删除
+          </el-button>
+          <div class="toolbar-right">
+            <el-input
+              v-model="searchText"
+              placeholder="搜索"
+              class="search-input"
+              clearable
             >
-              <el-table-column type="selection" width="55" />
-              <el-table-column prop="name" label="资源池名称" sortable>
-                <template #default="{ row }">
-                  <el-link type="primary" :underline="false" @click="handleView(row)">
-                    {{ row.name }}
-                  </el-link>
-                  <el-tag v-if="row.location" size="small" class="name-tag">
-                    {{ row.location }}
-                  </el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column prop="cpuCores" label="录入CPU总数（核）" width="150" />
-              <el-table-column prop="memorySize" label="录入内存大小（GB）" width="160" />
-              <el-table-column prop="gpuCount" label="录入GPU卡数量" width="140" />
-              <el-table-column prop="status" label="资源纳管数量" width="140" />
-              <el-table-column prop="createdAt" label="创建时间" width="180" />
-              <el-table-column label="操作" width="140" fixed="right">
-                <template #default="{ row }">
-                  <el-link type="primary" :underline="false" @click="handleEdit(row)">
-                    编辑
-                  </el-link>
-                  <el-divider direction="vertical" />
-                  <el-link type="primary" :underline="false" @click="handleDelete(row)">
-                    移除
-                  </el-link>
-                </template>
-              </el-table-column>
-            </el-table>
-
-            <!-- 分页 -->
-            <div class="pagination-wrapper">
-              <span class="pagination-total">共{{ filteredData.length }}条，</span>
-              <el-pagination
-                v-model:current-page="currentPage"
-                v-model:page-size="pageSize"
-                :page-sizes="[10, 20, 50, 100]"
-                :total="filteredData.length"
-                layout="sizes, prev, pager, next"
-                class="pagination"
-              />
-            </div>
+              <template #suffix>
+                <el-icon class="search-icon"><Search /></el-icon>
+              </template>
+            </el-input>
           </div>
         </div>
 
-        <!-- 算力节点管理 -->
-        <div v-else-if="activeLeftMenu === 'compute-category'" class="content-wrapper">
-          <div class="page-header">
-            <h2 class="page-title">算力节点管理</h2>
-          </div>
+        <!-- 数据表格 -->
+        <el-table
+          :data="filteredData"
+          @selection-change="handleSelectionChange"
+          class="resource-table"
+        >
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="name" label="资源池名称" sortable>
+            <template #default="{ row }">
+              <el-link type="primary" :underline="false" @click="handleView(row)">
+                {{ row.name }}
+              </el-link>
+              <el-tag v-if="row.location" size="small" class="name-tag">
+                {{ row.location }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="cpuCores" label="录入CPU总数（核）" width="150" />
+          <el-table-column prop="memorySize" label="录入内存大小（GB）" width="160" />
+          <el-table-column prop="gpuCount" label="录入GPU卡数量" width="140" />
+          <el-table-column prop="status" label="资源纳管数量" width="140" />
+          <el-table-column prop="createdAt" label="创建时间" width="180" />
+          <el-table-column label="操作" width="140" fixed="right">
+            <template #default="{ row }">
+              <el-link type="primary" :underline="false" @click="handleEdit(row)">
+                编辑
+              </el-link>
+              <el-divider direction="vertical" />
+              <el-link type="primary" :underline="false" @click="handleDelete(row)">
+                移除
+              </el-link>
+            </template>
+          </el-table-column>
+        </el-table>
 
-          <!-- 内容区 -->
-          <div class="content-section">
-            <!-- 操作栏 -->
-            <div class="toolbar">
-              <el-button type="primary" @click="handleAddNode">
-                <el-icon><Plus /></el-icon>
-                新增
-              </el-button>
-              <el-button @click="handleSyncNode">
-                <el-icon><Refresh /></el-icon>
-                同步数据
-              </el-button>
-              <el-button :disabled="selectedNodeRows.length === 0" @click="handleBatchDeleteNode">
-                <el-icon><Delete /></el-icon>
-                删除
-              </el-button>
-              <div class="toolbar-right">
-                <el-input
-                  v-model="nodeSearchText"
-                  placeholder="搜索"
-                  class="search-input"
-                  clearable
-                >
-                  <template #suffix>
-                    <el-icon class="search-icon"><Search /></el-icon>
-                  </template>
-                </el-input>
-              </div>
-            </div>
-
-            <!-- 数据表格 -->
-            <el-table
-              :data="filteredNodeData"
-              @selection-change="handleNodeSelectionChange"
-              class="resource-table"
-            >
-              <el-table-column type="selection" width="55" />
-              <el-table-column prop="name" label="算力节点名称" sortable>
-                <template #default="{ row }">
-                  <el-link type="primary" :underline="false" @click="handleViewNode(row)">
-                    {{ row.name }}
-                  </el-link>
-                  <el-tag v-if="row.location" size="small" class="name-tag">
-                    {{ row.location }}
-                  </el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column prop="nodeCount" label="节点数量" width="120" />
-              <el-table-column prop="resourcePool" label="资源池" width="180" />
-              <el-table-column prop="createdAt" label="创建时间" width="180" />
-              <el-table-column label="操作" width="140" fixed="right">
-                <template #default="{ row }">
-                  <el-link type="primary" :underline="false" @click="handleEditNode(row)">
-                    编辑
-                  </el-link>
-                  <el-divider direction="vertical" />
-                  <el-link type="primary" :underline="false" @click="handleDeleteNode(row)">
-                    移除
-                  </el-link>
-                </template>
-              </el-table-column>
-            </el-table>
-
-            <!-- 分页 -->
-            <div class="pagination-wrapper">
-              <span class="pagination-total">共{{ filteredNodeData.length }}条，</span>
-              <el-pagination
-                v-model:current-page="nodeCurrentPage"
-                v-model:page-size="nodePageSize"
-                :page-sizes="[10, 20, 50, 100]"
-                :total="filteredNodeData.length"
-                layout="sizes, prev, pager, next"
-                class="pagination"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- 调度策略管理 -->
-        <div v-else-if="activeLeftMenu === 'scheduling-policy'" class="content-wrapper">
-          <div class="page-header">
-            <h2 class="page-title">调度策略管理</h2>
-          </div>
-
-          <!-- 内容区 -->
-          <div class="content-section">
-            <!-- 操作栏 -->
-            <div class="toolbar">
-              <el-button type="primary" @click="handleAddPolicy">
-                <el-icon><Plus /></el-icon>
-                新建
-              </el-button>
-              <el-button @click="handleDeletePolicy">
-                <el-icon><Delete /></el-icon>
-                删除
-              </el-button>
-              <div class="toolbar-right">
-                <el-input
-                  v-model="policySearchText"
-                  placeholder="搜索"
-                  class="search-input"
-                  clearable
-                >
-                  <template #suffix>
-                    <el-icon class="search-icon"><Search /></el-icon>
-                  </template>
-                </el-input>
-              </div>
-            </div>
-
-            <!-- 数据表格 -->
-            <el-table
-              :data="filteredPolicyData"
-              @selection-change="handlePolicySelectionChange"
-              class="resource-table"
-            >
-              <el-table-column type="selection" width="55" />
-              <el-table-column prop="name" label="名称" sortable>
-                <template #default="{ row }">
-                  <el-link type="primary" :underline="false" @click="handleViewPolicy(row)">
-                    {{ row.name }}
-                  </el-link>
-                </template>
-              </el-table-column>
-              <el-table-column prop="type" label="类型" width="150" />
-              <el-table-column prop="remark" label="备注" width="200" />
-              <el-table-column prop="status" label="状态" width="120">
-                <template #default="{ row }">
-                  <el-tag v-if="row.enabled" type="success" size="small">启用</el-tag>
-                  <el-tag v-else type="info" size="small">禁用</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" width="240" fixed="right">
-                <template #default="{ row }">
-                  <el-link type="primary" :underline="false" @click="handleEditPolicy(row)">
-                    编辑
-                  </el-link>
-                  <el-divider direction="vertical" />
-                  <el-link
-                    type="primary"
-                    :underline="false"
-                    @click="handleTogglePolicyStatus(row)"
-                  >
-                    {{ row.enabled ? '禁用' : '启用' }}
-                  </el-link>
-                  <el-divider direction="vertical" />
-                  <el-link type="primary" :underline="false" @click="handleDeleteSinglePolicy(row)">
-                    删除
-                  </el-link>
-                </template>
-              </el-table-column>
-            </el-table>
-
-            <!-- 分页 -->
-            <div class="pagination-wrapper">
-              <span class="pagination-total">共{{ filteredPolicyData.length }}条，</span>
-              <el-pagination
-                v-model:current-page="policyCurrentPage"
-                v-model:page-size="policyPageSize"
-                :page-sizes="[10, 20, 50, 100]"
-                :total="filteredPolicyData.length"
-                layout="sizes, prev, pager, next"
-                class="pagination"
-              />
-            </div>
-          </div>
+        <!-- 分页 -->
+        <div class="pagination-wrapper">
+          <span class="pagination-total">共{{ filteredData.length }}条，</span>
+          <el-pagination
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+            :page-sizes="[10, 20, 50, 100]"
+            :total="filteredData.length"
+            layout="sizes, prev, pager, next"
+            class="pagination"
+          />
         </div>
       </div>
     </div>
@@ -368,176 +178,15 @@
         <el-button type="primary" @click="handleSubmit">确定</el-button>
       </template>
     </el-dialog>
-
-    <!-- 算力节点编辑弹窗 -->
-    <el-dialog
-      v-model="nodeDialogVisible"
-      :title="nodeDialogTitle"
-      width="800px"
-      :close-on-click-modal="false"
-      class="edit-dialog node-dialog"
-    >
-      <!-- 步骤指示器 -->
-      <el-steps :active="nodeCurrentStep" align-center class="node-steps">
-        <el-step title="基本信息" />
-        <el-step title="连接设置" />
-      </el-steps>
-
-      <!-- 第一步：基本信息 -->
-      <div v-show="nodeCurrentStep === 0" class="step-content">
-        <el-form
-          :model="nodeFormData"
-          :rules="nodeFormRules"
-          ref="nodeFormRef"
-          label-width="120px"
-        >
-          <el-form-item label="算力节点名称" prop="name" required>
-            <el-input v-model="nodeFormData.name" placeholder="请输入名称" />
-          </el-form-item>
-
-          <el-form-item label="资源池" prop="resourcePool" required>
-            <el-select
-              v-model="nodeFormData.resourcePool"
-              placeholder="请选择"
-              style="width: 100%"
-            >
-              <el-option
-                v-for="pool in tableData"
-                :key="pool.id"
-                :label="pool.name"
-                :value="pool.name"
-              />
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="别名">
-            <el-input v-model="nodeFormData.alias" placeholder="请输入别名" />
-          </el-form-item>
-
-          <el-form-item label="描述">
-            <el-input
-              v-model="nodeFormData.description"
-              type="textarea"
-              :rows="3"
-              placeholder="请输入描述信息"
-            />
-          </el-form-item>
-        </el-form>
-      </div>
-
-      <!-- 第二步：连接设置 -->
-      <div v-show="nodeCurrentStep === 1" class="step-content">
-        <el-form
-          :model="nodeFormData"
-          :rules="nodeFormRules"
-          ref="nodeFormRef2"
-          label-width="120px"
-        >
-          <el-form-item label="连接方式" required>
-            <el-radio-group v-model="nodeFormData.connectionType">
-              <el-radio-button label="direct">直接连接</el-radio-button>
-              <el-radio-button label="proxy">代理连接</el-radio-button>
-            </el-radio-group>
-            <el-icon style="margin-left: 8px; color: #909399; cursor: help">
-              <QuestionFilled />
-            </el-icon>
-          </el-form-item>
-
-          <div class="kubeconfig-section">
-            <div class="section-label">成员集群 kubeconfig</div>
-            <el-input
-              v-model="nodeFormData.kubeconfig"
-              type="textarea"
-              :rows="15"
-              placeholder="请输入 kubeconfig 内容"
-              class="kubeconfig-input"
-            />
-          </div>
-        </el-form>
-      </div>
-
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button v-if="nodeCurrentStep === 1" @click="handleNodePrevStep">上一步</el-button>
-          <el-button v-if="nodeCurrentStep === 0" @click="nodeDialogVisible = false"
-            >取消</el-button
-          >
-          <el-button v-if="nodeCurrentStep === 0" type="primary" @click="handleNodeNextStep"
-            >下一步</el-button
-          >
-          <el-button v-if="nodeCurrentStep === 1" type="primary" @click="handleNodeSubmit"
-            >确定</el-button
-          >
-          <el-button v-if="nodeCurrentStep === 1" @click="nodeDialogVisible = false"
-            >取消</el-button
-          >
-        </div>
-      </template>
-    </el-dialog>
-
-    <!-- 调度策略编辑弹窗 -->
-    <el-dialog
-      v-model="policyDialogVisible"
-      :title="policyDialogTitle"
-      width="600px"
-      :close-on-click-modal="false"
-      class="edit-dialog"
-    >
-      <el-form
-        :model="policyFormData"
-        :rules="policyFormRules"
-        ref="policyFormRef"
-        label-width="100px"
-      >
-        <el-form-item label="名称" prop="name" required>
-          <el-input v-model="policyFormData.name" placeholder="请输入策略名称" />
-        </el-form-item>
-
-        <el-form-item label="类型" prop="type" required>
-          <el-select v-model="policyFormData.type" placeholder="请选择" style="width: 100%">
-            <el-option label="基础策略" value="基础策略" />
-            <el-option label="高级策略" value="高级策略" />
-            <el-option label="自定义策略" value="自定义策略" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="备注">
-          <el-input
-            v-model="policyFormData.remark"
-            type="textarea"
-            :rows="3"
-            placeholder="请输入备注信息"
-          />
-        </el-form-item>
-
-        <el-form-item label="状态">
-          <el-switch v-model="policyFormData.enabled" active-text="启用" inactive-text="禁用" />
-        </el-form-item>
-      </el-form>
-
-      <template #footer>
-        <el-button @click="policyDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handlePolicySubmit">确定</el-button>
-      </template>
-    </el-dialog>
-  </div>
+  </MainLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import {
-  Search,
-  Refresh,
-  Plus,
-  Delete,
-  Close,
-  QuestionFilled
-} from '@element-plus/icons-vue'
+import { Search, Refresh, Plus, Delete, Close } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import TopNavbar from '@/components/TopNavbar.vue'
-import SidebarMenu from '@/components/SidebarMenu.vue'
-import LeftSidebar from '@/components/LeftSidebar.vue'
+import MainLayout from '@/components/MainLayout.vue'
 
 interface GpuResource {
   brand: string
@@ -558,34 +207,8 @@ interface ResourcePool {
   createdAt: string
 }
 
-interface ComputeNode {
-  id: string
-  name: string
-  location: string
-  alias: string
-  description: string
-  resourcePool: string
-  nodeCount: number
-  connectionType: 'direct' | 'proxy'
-  kubeconfig: string
-  createdAt: string
-}
-
-interface SchedulingPolicy {
-  id: string
-  name: string
-  type: string
-  remark: string
-  enabled: boolean
-  createdAt: string
-}
-
 const STORAGE_KEY = 'resource_pool_data'
-const NODE_STORAGE_KEY = 'compute_node_data'
-const POLICY_STORAGE_KEY = 'scheduling_policy_data'
 
-const sidebarVisible = ref(false)
-const activeLeftMenu = ref('resource-pool')
 const searchText = ref('')
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -594,28 +217,6 @@ const dialogVisible = ref(false)
 const dialogTitle = ref('新建')
 const formRef = ref<FormInstance>()
 const tableData = ref<ResourcePool[]>([])
-
-// 算力节点相关状态
-const nodeSearchText = ref('')
-const nodeCurrentPage = ref(1)
-const nodePageSize = ref(10)
-const selectedNodeRows = ref<ComputeNode[]>([])
-const nodeDialogVisible = ref(false)
-const nodeDialogTitle = ref('新增算力节点')
-const nodeCurrentStep = ref(0)
-const nodeFormRef = ref<FormInstance>()
-const nodeFormRef2 = ref<FormInstance>()
-const nodeTableData = ref<ComputeNode[]>([])
-
-// 调度策略相关状态
-const policySearchText = ref('')
-const policyCurrentPage = ref(1)
-const policyPageSize = ref(10)
-const selectedPolicyRows = ref<SchedulingPolicy[]>([])
-const policyDialogVisible = ref(false)
-const policyDialogTitle = ref('新建策略')
-const policyFormRef = ref<FormInstance>()
-const policyTableData = ref<SchedulingPolicy[]>([])
 
 // 表单数据
 const formData = ref<ResourcePool>({
@@ -636,42 +237,6 @@ const formData = ref<ResourcePool>({
 const formRules: FormRules = {
   name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
   location: [{ required: true, message: '请选择地域信息', trigger: 'change' }]
-}
-
-// 算力节点表单数据
-const nodeFormData = ref<ComputeNode>({
-  id: '',
-  name: '',
-  location: '',
-  alias: '',
-  description: '',
-  resourcePool: '',
-  nodeCount: 25,
-  connectionType: 'direct',
-  kubeconfig: '',
-  createdAt: ''
-})
-
-// 算力节点表单验证规则
-const nodeFormRules: FormRules = {
-  name: [{ required: true, message: '请输入算力节点名称', trigger: 'blur' }],
-  resourcePool: [{ required: true, message: '请选择资源池', trigger: 'change' }]
-}
-
-// 调度策略表单数据
-const policyFormData = ref<SchedulingPolicy>({
-  id: '',
-  name: '',
-  type: '基础策略',
-  remark: '',
-  enabled: true,
-  createdAt: ''
-})
-
-// 调度策略表单验证规则
-const policyFormRules: FormRules = {
-  name: [{ required: true, message: '请输入策略名称', trigger: 'blur' }],
-  type: [{ required: true, message: '请选择策略类型', trigger: 'change' }]
 }
 
 // 初始化默认数据
@@ -727,57 +292,6 @@ const saveData = () => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tableData.value))
 }
 
-// 算力节点初始化默认数据
-const initDefaultNodeData = (): ComputeNode[] => {
-  return [
-    {
-      id: '1',
-      name: 'Computing-node01',
-      location: '北京',
-      alias: '',
-      description: '',
-      resourcePool: 'Resource-Pool01',
-      nodeCount: 25,
-      connectionType: 'direct',
-      kubeconfig: '',
-      createdAt: '2024-01-17 19:43:23'
-    },
-    {
-      id: '2',
-      name: 'Computing-node02',
-      location: '上海',
-      alias: '',
-      description: '',
-      resourcePool: 'Resource-Pool01',
-      nodeCount: 25,
-      connectionType: 'direct',
-      kubeconfig: '',
-      createdAt: '2024-01-17 19:43:23'
-    }
-  ]
-}
-
-// 从本地存储加载算力节点数据
-const loadNodeData = () => {
-  const stored = localStorage.getItem(NODE_STORAGE_KEY)
-  if (stored) {
-    try {
-      nodeTableData.value = JSON.parse(stored)
-    } catch (e) {
-      nodeTableData.value = initDefaultNodeData()
-      saveNodeData()
-    }
-  } else {
-    nodeTableData.value = initDefaultNodeData()
-    saveNodeData()
-  }
-}
-
-// 保存算力节点数据到本地存储
-const saveNodeData = () => {
-  localStorage.setItem(NODE_STORAGE_KEY, JSON.stringify(nodeTableData.value))
-}
-
 // 过滤后的数据
 const filteredData = computed(() => {
   if (!searchText.value) {
@@ -785,85 +299,6 @@ const filteredData = computed(() => {
   }
   return tableData.value.filter((item) =>
     item.name.toLowerCase().includes(searchText.value.toLowerCase())
-  )
-})
-
-// 过滤后的算力节点数据
-const filteredNodeData = computed(() => {
-  if (!nodeSearchText.value) {
-    return nodeTableData.value
-  }
-  return nodeTableData.value.filter((item) =>
-    item.name.toLowerCase().includes(nodeSearchText.value.toLowerCase())
-  )
-})
-
-// 调度策略初始化默认数据
-const initDefaultPolicyData = (): SchedulingPolicy[] => {
-  return [
-    {
-      id: '1',
-      name: '平均调度策略',
-      type: '基础策略',
-      remark: '---',
-      enabled: true,
-      createdAt: '2024-01-17 19:43:23'
-    },
-    {
-      id: '2',
-      name: '集中调度策略',
-      type: '基础策略',
-      remark: '---',
-      enabled: true,
-      createdAt: '2024-01-17 19:43:23'
-    },
-    {
-      id: '3',
-      name: '神域权重调度策略',
-      type: '基础策略',
-      remark: '---',
-      enabled: true,
-      createdAt: '2024-01-17 19:43:23'
-    },
-    {
-      id: '4',
-      name: '权限调度策略',
-      type: '基础策略',
-      remark: '---',
-      enabled: true,
-      createdAt: '2024-01-17 19:43:23'
-    }
-  ]
-}
-
-// 从本地存储加载调度策略数据
-const loadPolicyData = () => {
-  const stored = localStorage.getItem(POLICY_STORAGE_KEY)
-  if (stored) {
-    try {
-      policyTableData.value = JSON.parse(stored)
-    } catch (e) {
-      policyTableData.value = initDefaultPolicyData()
-      savePolicyData()
-    }
-  } else {
-    policyTableData.value = initDefaultPolicyData()
-    savePolicyData()
-  }
-}
-
-// 保存调度策略数据到本地存储
-const savePolicyData = () => {
-  localStorage.setItem(POLICY_STORAGE_KEY, JSON.stringify(policyTableData.value))
-}
-
-// 过滤后的调度策略数据
-const filteredPolicyData = computed(() => {
-  if (!policySearchText.value) {
-    return policyTableData.value
-  }
-  return policyTableData.value.filter((item) =>
-    item.name.toLowerCase().includes(policySearchText.value.toLowerCase())
   )
 })
 
@@ -1008,329 +443,13 @@ const removeIp = (index: number) => {
   formData.value.ipList.splice(index, 1)
 }
 
-const handleToggleSidebar = () => {
-  sidebarVisible.value = !sidebarVisible.value
-}
-
-const handleMenuSelect = (index: string) => {
-  console.log('Top menu selected:', index)
-}
-
-const handleSidebarMenuSelect = (index: string) => {
-  console.log('Sidebar menu selected:', index)
-  sidebarVisible.value = false
-
-  if (index === 'resource-pool-management') {
-    activeLeftMenu.value = 'resource-pool'
-  } else if (index === 'compute-node-management') {
-    activeLeftMenu.value = 'compute-category'
-  }
-}
-
-const handleLeftMenuSelect = (key: string) => {
-  activeLeftMenu.value = key
-  console.log('Left menu selected:', key)
-}
-
-// ========== 算力节点管理方法 ==========
-
-// 新增算力节点
-const handleAddNode = () => {
-  nodeDialogTitle.value = '新增算力节点'
-  nodeCurrentStep.value = 0
-  nodeFormData.value = {
-    id: '',
-    name: '',
-    location: '',
-    alias: '',
-    description: '',
-    resourcePool: '',
-    nodeCount: 25,
-    connectionType: 'direct',
-    kubeconfig: '',
-    createdAt: ''
-  }
-  nodeDialogVisible.value = true
-}
-
-// 编辑算力节点
-const handleEditNode = (row: ComputeNode) => {
-  nodeDialogTitle.value = '编辑算力节点'
-  nodeCurrentStep.value = 0
-  nodeFormData.value = JSON.parse(JSON.stringify(row))
-  nodeDialogVisible.value = true
-}
-
-// 查看算力节点
-const handleViewNode = (row: ComputeNode) => {
-  handleEditNode(row)
-}
-
-// 删除算力节点
-const handleDeleteNode = (row: ComputeNode) => {
-  ElMessageBox.confirm('确定要删除该算力节点吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(() => {
-      const index = nodeTableData.value.findIndex((item) => item.id === row.id)
-      if (index > -1) {
-        nodeTableData.value.splice(index, 1)
-        saveNodeData()
-        ElMessage.success('删除成功')
-      }
-    })
-    .catch(() => {})
-}
-
-// 批量删除算力节点
-const handleBatchDeleteNode = () => {
-  ElMessageBox.confirm(
-    `确定要删除选中的 ${selectedNodeRows.value.length} 条数据吗？`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-  )
-    .then(() => {
-      const ids = selectedNodeRows.value.map((item) => item.id)
-      nodeTableData.value = nodeTableData.value.filter((item) => !ids.includes(item.id))
-      saveNodeData()
-      ElMessage.success('删除成功')
-      selectedNodeRows.value = []
-    })
-    .catch(() => {})
-}
-
-// 同步数据
-const handleSyncNode = () => {
-  ElMessage.info('同步功能开发中...')
-}
-
-// 下一步
-const handleNodeNextStep = async () => {
-  if (!nodeFormRef.value) return
-
-  await nodeFormRef.value.validate((valid) => {
-    if (valid) {
-      nodeCurrentStep.value = 1
-    }
-  })
-}
-
-// 上一步
-const handleNodePrevStep = () => {
-  nodeCurrentStep.value = 0
-}
-
-// 提交表单
-const handleNodeSubmit = async () => {
-  if (!nodeFormRef2.value) return
-
-  await nodeFormRef2.value.validate((valid) => {
-    if (valid) {
-      // 从资源池中获取地域信息
-      const pool = tableData.value.find((p) => p.name === nodeFormData.value.resourcePool)
-      const location = pool?.location || ''
-
-      if (nodeFormData.value.id) {
-        // 编辑
-        const index = nodeTableData.value.findIndex((item) => item.id === nodeFormData.value.id)
-        if (index > -1) {
-          nodeTableData.value[index] = {
-            ...nodeFormData.value,
-            location
-          }
-        }
-      } else {
-        // 新建
-        const now = new Date()
-        const createdAt = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`
-
-        const newItem: ComputeNode = {
-          ...nodeFormData.value,
-          id: Date.now().toString(),
-          location,
-          createdAt
-        }
-        nodeTableData.value.unshift(newItem)
-      }
-
-      saveNodeData()
-      nodeDialogVisible.value = false
-      ElMessage.success('保存成功')
-    }
-  })
-}
-
-// 选择变更
-const handleNodeSelectionChange = (rows: ComputeNode[]) => {
-  selectedNodeRows.value = rows
-}
-
-// ========== 调度策略管理方法 ==========
-
-// 新增调度策略
-const handleAddPolicy = () => {
-  policyDialogTitle.value = '新建策略'
-  policyFormData.value = {
-    id: '',
-    name: '',
-    type: '基础策略',
-    remark: '',
-    enabled: true,
-    createdAt: ''
-  }
-  policyDialogVisible.value = true
-}
-
-// 编辑调度策略
-const handleEditPolicy = (row: SchedulingPolicy) => {
-  policyDialogTitle.value = '编辑策略'
-  policyFormData.value = JSON.parse(JSON.stringify(row))
-  policyDialogVisible.value = true
-}
-
-// 查看调度策略
-const handleViewPolicy = (row: SchedulingPolicy) => {
-  handleEditPolicy(row)
-}
-
-// 删除单个调度策略
-const handleDeleteSinglePolicy = (row: SchedulingPolicy) => {
-  ElMessageBox.confirm('确定要删除该调度策略吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(() => {
-      const index = policyTableData.value.findIndex((item) => item.id === row.id)
-      if (index > -1) {
-        policyTableData.value.splice(index, 1)
-        savePolicyData()
-        ElMessage.success('删除成功')
-      }
-    })
-    .catch(() => {})
-}
-
-// 批量删除调度策略
-const handleDeletePolicy = () => {
-  if (selectedPolicyRows.value.length === 0) {
-    ElMessage.warning('请先选择要删除的数据')
-    return
-  }
-
-  ElMessageBox.confirm(
-    `确定要删除选中的 ${selectedPolicyRows.value.length} 条数据吗？`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-  )
-    .then(() => {
-      const ids = selectedPolicyRows.value.map((item) => item.id)
-      policyTableData.value = policyTableData.value.filter((item) => !ids.includes(item.id))
-      savePolicyData()
-      ElMessage.success('删除成功')
-      selectedPolicyRows.value = []
-    })
-    .catch(() => {})
-}
-
-// 切换策略状态
-const handleTogglePolicyStatus = (row: SchedulingPolicy) => {
-  const action = row.enabled ? '禁用' : '启用'
-  ElMessageBox.confirm(`确定要${action}该策略吗？`, '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(() => {
-      const index = policyTableData.value.findIndex((item) => item.id === row.id)
-      if (index > -1) {
-        policyTableData.value[index].enabled = !row.enabled
-        savePolicyData()
-        ElMessage.success(`${action}成功`)
-      }
-    })
-    .catch(() => {})
-}
-
-// 提交表单
-const handlePolicySubmit = async () => {
-  if (!policyFormRef.value) return
-
-  await policyFormRef.value.validate((valid) => {
-    if (valid) {
-      if (policyFormData.value.id) {
-        // 编辑
-        const index = policyTableData.value.findIndex((item) => item.id === policyFormData.value.id)
-        if (index > -1) {
-          policyTableData.value[index] = { ...policyFormData.value }
-        }
-      } else {
-        // 新建
-        const now = new Date()
-        const createdAt = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`
-
-        const newItem: SchedulingPolicy = {
-          ...policyFormData.value,
-          id: Date.now().toString(),
-          createdAt
-        }
-        policyTableData.value.unshift(newItem)
-      }
-
-      savePolicyData()
-      policyDialogVisible.value = false
-      ElMessage.success('保存成功')
-    }
-  })
-}
-
-// 选择变更
-const handlePolicySelectionChange = (rows: SchedulingPolicy[]) => {
-  selectedPolicyRows.value = rows
-}
-
 // 初始化
 onMounted(() => {
   loadData()
-  loadNodeData()
-  loadPolicyData()
 })
 </script>
 
 <style scoped lang="scss">
-.resource-pool-view {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background-color: #f5f7fa;
-}
-
-.main-layout {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-}
-
-.content-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background-color: #fff;
-}
-
 .content-wrapper {
   flex: 1;
   display: flex;
@@ -1427,63 +546,6 @@ onMounted(() => {
 
   :deep(.el-form-item__label) {
     font-weight: 500;
-  }
-}
-
-// 算力节点对话框样式
-.node-dialog {
-  .node-steps {
-    margin-bottom: 32px;
-    padding: 0 50px;
-  }
-
-  .step-content {
-    min-height: 300px;
-    padding: 20px 0;
-  }
-
-  .kubeconfig-section {
-    margin-top: 24px;
-
-    .section-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #303133;
-      margin-bottom: 12px;
-    }
-
-    .kubeconfig-input {
-      :deep(textarea) {
-        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
-        font-size: 13px;
-        line-height: 1.6;
-        background-color: #2b3035;
-        color: #e8eaed;
-        border: 1px solid #3c4043;
-        border-radius: 4px;
-
-        &:focus {
-          background-color: #2b3035;
-          border-color: #409eff;
-        }
-
-        &::placeholder {
-          color: #80868b;
-        }
-      }
-    }
-  }
-
-  .dialog-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-  }
-
-  :deep(.el-radio-button) {
-    .el-radio-button__inner {
-      padding: 8px 20px;
-    }
   }
 }
 </style>
