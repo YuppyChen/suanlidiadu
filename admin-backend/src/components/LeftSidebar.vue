@@ -1,20 +1,42 @@
 <template>
   <div class="left-sidebar">
-    <div class="sidebar-header">
-      <span class="header-title">资源池纳管</span>
-    </div>
     <div class="sidebar-menu">
-      <div
-        v-for="item in menuItems"
-        :key="item.key"
-        class="menu-item"
-        :class="{ active: activeMenu === item.key }"
-        @click="handleMenuClick(item.key)"
-      >
-        <el-icon class="menu-icon">
-          <component :is="item.icon" />
-        </el-icon>
-        <span class="menu-text">{{ item.label }}</span>
+      <!-- 调度管理 -->
+      <div class="menu-group">
+        <div class="group-header">
+          <span class="group-title">调度管理</span>
+        </div>
+        <div
+          v-for="item in schedulingMenuItems"
+          :key="item.key"
+          class="menu-item"
+          :class="{ active: activeMenu === item.key }"
+          @click="handleMenuClick(item.key)"
+        >
+          <el-icon class="menu-icon">
+            <component :is="item.icon" />
+          </el-icon>
+          <span class="menu-text">{{ item.label }}</span>
+        </div>
+      </div>
+
+      <!-- 资源池纳管 -->
+      <div class="menu-group">
+        <div class="group-header">
+          <span class="group-title">资源池纳管</span>
+        </div>
+        <div
+          v-for="item in resourceMenuItems"
+          :key="item.key"
+          class="menu-item"
+          :class="{ active: activeMenu === item.key }"
+          @click="handleMenuClick(item.key)"
+        >
+          <el-icon class="menu-icon">
+            <component :is="item.icon" />
+          </el-icon>
+          <span class="menu-text">{{ item.label }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -22,7 +44,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { Box, List } from '@element-plus/icons-vue'
+import { Box, List, Operation } from '@element-plus/icons-vue'
 
 interface MenuItem {
   key: string
@@ -50,7 +72,17 @@ watch(
   }
 )
 
-const menuItems: MenuItem[] = [
+// 调度管理菜单
+const schedulingMenuItems: MenuItem[] = [
+  {
+    key: 'scheduling-policy',
+    label: '调度策略管理',
+    icon: Operation
+  }
+]
+
+// 资源池纳管菜单
+const resourceMenuItems: MenuItem[] = [
   {
     key: 'resource-pool',
     label: '资源池管理',
@@ -79,22 +111,30 @@ const handleMenuClick = (key: string) => {
   flex-direction: column;
 }
 
-.sidebar-header {
-  padding: 16px;
-  border-bottom: 1px solid #e4e7ed;
-  background-color: #fff;
-
-  .header-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #303133;
-  }
-}
-
 .sidebar-menu {
   flex: 1;
   padding: 8px 0;
   overflow-y: auto;
+}
+
+.menu-group {
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.group-header {
+  padding: 12px 16px 8px;
+
+  .group-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #909399;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
 }
 
 .menu-item {
