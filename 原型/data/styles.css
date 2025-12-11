@@ -1,0 +1,281 @@
+﻿.ax_default {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:20px;
+  letter-spacing:normal;
+  color:#333333;
+  vertical-align:none;
+  text-align:center;
+  line-height:18px;
+  text-transform:none;
+}
+._图像 {
+}
+.placeholder {
+}
+._标题_1 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:32px;
+  text-align:left;
+}
+._标题_2 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:24px;
+  text-align:left;
+}
+._标题_3 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:18px;
+  text-align:left;
+}
+._标题_4 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:14px;
+  text-align:left;
+}
+._标题_5 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  text-align:left;
+}
+._标题_6 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:10px;
+  text-align:left;
+}
+._文本 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:14px;
+  color:#000000;
+  text-align:left;
+}
+._表单提示 {
+  color:#999999;
+}
+._表单禁用 {
+}
+._流程形状 {
+}
+._连接符 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  line-height:normal;
+}
+.line {
+}
+.label {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:14px;
+  text-align:left;
+}
+.box_3 {
+}
+._图片 {
+}
+.label1 {
+  font-size:14px;
+  text-align:left;
+}
+.paragraph {
+  text-align:left;
+}
+._文本段落 {
+  text-align:left;
+}
+.box_31 {
+  font-size:12px;
+}
+.heading_3 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:18px;
+  text-align:left;
+}
+._形状 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  color:#FFFFFF;
+  text-align:center;
+  line-height:normal;
+}
+.text_field {
+  font-family:'Microsoft YaHei UI', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:12px;
+  color:#333333;
+  text-align:left;
+}
+.form_disabled {
+}
+.form_hint {
+  color:#999999;
+}
+.box_1 {
+}
+.text_field1 {
+  color:#000000;
+  text-align:left;
+}
+.table_cell {
+}
+.box_11 {
+  font-size:12px;
+  text-align:left;
+}
+.heading_2 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:24px;
+  text-align:left;
+}
+.label2 {
+  font-size:12px;
+  text-align:left;
+}
+._新样式 {
+  color:#000000;
+  text-align:left;
+}
+._标题1 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:32px;
+  text-align:left;
+}
+.text_field2 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:14px;
+  color:#666666;
+  text-align:left;
+}
+.text_area {
+  font-size:12px;
+  color:#666666;
+  text-align:left;
+  line-height:18px;
+}
+._表单提示1 {
+  color:#BBBBBB;
+}
+._形状1 {
+  font-family:'Arial Normal', 'Arial', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:13px;
+  color:#51A3FF;
+  text-align:center;
+  line-height:normal;
+}
+.icon {
+}
+.ellipse {
+  font-family:'Microsoft YaHei UI Bold', 'Microsoft YaHei UI Regular', 'Microsoft YaHei UI', sans-serif;
+  font-weight:700;
+  font-style:normal;
+  font-size:14px;
+  color:#333333;
+}
+.image {
+}
+.heading_1 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:32px;
+  text-align:left;
+}
+.ellipse1 {
+}
+.line1 {
+}
+.box_2 {
+}
+.line2 {
+}
+.text_field3 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:12px;
+  color:#000000;
+  text-align:left;
+}
+._图像1 {
+}
+.heading_11 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:32px;
+  text-align:left;
+}
+._一级标题 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:32px;
+  text-align:left;
+}
+._二级标题 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:bold;
+  font-style:normal;
+  font-size:24px;
+  text-align:left;
+}
+.icon1 {
+}
+.flow_shape {
+}
+.shape {
+}
+._形状2 {
+}
+.box_21 {
+}
+.box_22 {
+  font-size:12px;
+}
+._10号文字 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:10px;
+  color:#7991AB;
+  text-align:left;
+}
+._新样式1 {
+  font-family:'微软雅黑', sans-serif;
+  font-weight:400;
+  font-style:normal;
+  font-size:8px;
+  color:#000000;
+  text-align:left;
+}
+textarea, select, input, button { outline: none; }
