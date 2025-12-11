@@ -1,0 +1,10 @@
+name = "admin-backend"
+compatibility_date = "2024-01-01"
+
+[site]
+bucket = "./dist"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
