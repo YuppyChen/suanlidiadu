@@ -27,19 +27,6 @@
               <span class="nav-text">{{ item.label }}</span>
             </div>
           </div>
-
-          <div class="section-title" style="margin-top: 24px">系统概览</div>
-          <div class="quick-nav-list">
-            <div
-              v-for="item in systemItems"
-              :key="item.index"
-              class="quick-nav-item"
-              :class="{ active: activeMenu === item.index }"
-              @click="handleMenuSelect(item.index)"
-            >
-              <span class="nav-text">{{ item.label }}</span>
-            </div>
-          </div>
         </div>
 
         <!-- 右侧服务目录 -->
@@ -186,10 +173,9 @@ const activeMenu = ref('')
 
 // 最近访问
 const recentItems = [
-  { index: 'system-overview', label: '系统概览' },
-  { index: 'user-management', label: '用户管理' },
-  { index: 'physical-resources', label: '物理机资源' },
-  { index: 'cluster-backup', label: '集群备份' }
+{ index: 'scheduling-policy', label: '调度策略管理' },
+{ index: 'resource-pool', label: '资源池管理' },
+{ index: 'compute-node', label: '算力节点管理' }
 ]
 
 // 系统概览

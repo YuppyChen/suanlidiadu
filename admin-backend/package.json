@@ -7,7 +7,7 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "build:production": "vite build",
     "build-only": "vite build",
-    "deploy": "pnpm build:production && wrangler pages deploy dist",
+    "deploy": "pnpm build:production && wrangler pages deploy dist --project-name=admin-backend --branch=main",
     "dev": "vite",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",

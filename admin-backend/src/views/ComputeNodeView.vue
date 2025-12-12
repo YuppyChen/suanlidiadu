@@ -14,8 +14,8 @@
             <el-icon><Plus /></el-icon>
             新增
           </el-button>
-          <el-button @click="handleSyncNode">
-            <el-icon><Refresh /></el-icon>
+          <el-button @click="handleSyncNode" :loading="isSyncingNode">
+            <el-icon v-if="!isSyncingNode"><Refresh /></el-icon>
             同步数据
           </el-button>
           <el-button :disabled="selectedNodeRows.length === 0" @click="handleBatchDeleteNode">
@@ -220,6 +220,7 @@ const nodeCurrentStep = ref(0)
 const nodeFormRef = ref<FormInstance>()
 const nodeFormRef2 = ref<FormInstance>()
 const nodeTableData = ref<ComputeNode[]>([])
+const isSyncingNode = ref(false)
 
 const nodeFormData = ref<ComputeNode>({
   id: '',
@@ -362,8 +363,16 @@ const handleBatchDeleteNode = () => {
     .catch(() => {})
 }
 
-const handleSyncNode = () => {
-  ElMessage.info('同步功能开发中...')
+const handleSyncNode = async () => {
+  if (isSyncingNode.value) return
+  
+  isSyncingNode.value = true
+  
+  // Simulate sync process
+  await new Promise(resolve => setTimeout(resolve, 1500))
+  
+  isSyncingNode.value = false
+  ElMessage.warning('没有最新数据可以同步')
 }
 
 const handleNodeNextStep = async () => {

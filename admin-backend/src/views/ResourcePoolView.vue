@@ -14,8 +14,8 @@
             <el-icon><Plus /></el-icon>
             新建
           </el-button>
-          <el-button @click="handleSync">
-            <el-icon><Refresh /></el-icon>
+          <el-button @click="handleSync" :loading="isSyncing">
+            <el-icon v-if="!isSyncing"><Refresh /></el-icon>
             同步信息
           </el-button>
           <el-button :disabled="selectedRows.length === 0" @click="handleBatchDelete">
@@ -217,6 +217,7 @@ const dialogVisible = ref(false)
 const dialogTitle = ref('新建')
 const formRef = ref<FormInstance>()
 const tableData = ref<ResourcePool[]>([])
+const isSyncing = ref(false)
 
 // 表单数据
 const formData = ref<ResourcePool>({
@@ -375,8 +376,16 @@ const handleBatchDelete = () => {
 }
 
 // 同步信息
-const handleSync = () => {
-  ElMessage.info('同步功能开发中...')
+const handleSync = async () => {
+  if (isSyncing.value) return
+  
+  isSyncing.value = true
+  
+  // Simulate sync process
+  await new Promise(resolve => setTimeout(resolve, 1500))
+  
+  isSyncing.value = false
+  ElMessage.warning('没有最新数据可以同步')
 }
 
 // 提交表单
